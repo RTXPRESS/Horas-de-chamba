@@ -115,8 +115,12 @@ th {
     font-size: 20px;
   }
 
-  form, #calendar {
+  #calendar {
     width: 80%;
+    padding: 10px;
+  }
+  form {
+    width: 90%;
     padding: 10px;
   }
 
