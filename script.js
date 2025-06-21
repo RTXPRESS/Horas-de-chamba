@@ -107,9 +107,12 @@ async function cargarRegistros() {
 
     tabla.innerHTML = '';
     registros.forEach(reg => {
+      const fechaObj = new Date(reg.fecha);
+      const fechaFormateada = fechaObj.toISOString().slice(0, 10); // YYYY-MM-DD
+
       const fila = document.createElement('tr');
       fila.innerHTML = `
-        <td>${reg.fecha}</td>
+        <td>${fechaFormateada}</td>
         <td>${reg.horas}</td>
         <td>${reg.feriado ? '✅' : '❌'}</td>
         <td>${reg.horaInicio || '-'}</td>
@@ -122,31 +125,6 @@ async function cargarRegistros() {
   }
 }
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const nuevoRegistro = {
-    fecha: document.getElementById('fecha').value,
-    horas: parseFloat(document.getElementById('horas').value),
-    feriado: document.getElementById('feriado').checked,
-    horaInicio: document.getElementById('horaInicio').value,
-    horaFin: document.getElementById('horaFin').value,
-  };
-
-  try {
-    await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(nuevoRegistro)
-    });
-
-    form.reset();
-    fechaInput.value = nuevoRegistro.fecha;
-    cargarRegistros();
-  } catch (err) {
-    console.error("Error guardando registro:", err);
-  }
-});
 
 document.getElementById('limpiarRegistros').addEventListener('click', async () => {
   if (confirm('¿Estás seguro de que deseas borrar todos los registros?')) {
