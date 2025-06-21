@@ -10,6 +10,8 @@ const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 let fechaActual = new Date();
 let hoy = new Date();
 
+const API_URL = 'https://script.google.com/macros/s/AKfycbxXeKXQnqbij57AxTsZ3PVkoMnLTWQWrLUkZUF5l2qgE_fFuwYOrp2ADNdGga6PiN674A/exec';
+
 function generarCalendario(fecha) {
   calendar.innerHTML = '';
 
@@ -58,8 +60,7 @@ function generarCalendario(fecha) {
   grid.className = 'calendar-grid';
 
   for (let i = 0; i < diaInicio; i++) {
-    const celdaVacia = document.createElement('div');
-    grid.appendChild(celdaVacia);
+    grid.appendChild(document.createElement('div'));
   }
 
   for (let dia = 1; dia <= diasEnMes; dia++) {
@@ -96,13 +97,12 @@ function generarCalendario(fecha) {
 generarCalendario(fechaActual);
 
 // ----------------------------
-// FUNCIONES DE BASE DE DATOS
+// FUNCIONES CON GOOGLE SHEETS
 // ----------------------------
 
-// Cargar registros desde SQLite via API
 async function cargarRegistros() {
   try {
-    const response = await fetch('/api/registros');
+    const response = await fetch(API_URL);
     const registros = await response.json();
 
     tabla.innerHTML = '';
@@ -122,7 +122,6 @@ async function cargarRegistros() {
   }
 }
 
-// Enviar nuevo registro al backend
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -135,9 +134,9 @@ form.addEventListener('submit', async (e) => {
   };
 
   try {
-    await fetch('/api/registros', {
+    await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(nuevoRegistro)
     });
 
@@ -149,11 +148,10 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-// Borrar todos los registros
 document.getElementById('limpiarRegistros').addEventListener('click', async () => {
   if (confirm('¿Estás seguro de que deseas borrar todos los registros?')) {
     try {
-      await fetch('/api/registros', { method: 'DELETE' });
+      await fetch(API_URL, { method: 'DELETE' });
       cargarRegistros();
     } catch (err) {
       console.error("Error al borrar registros:", err);
@@ -161,5 +159,4 @@ document.getElementById('limpiarRegistros').addEventListener('click', async () =
   }
 });
 
-// Inicial
 cargarRegistros();
