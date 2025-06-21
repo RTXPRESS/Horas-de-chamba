@@ -10,7 +10,7 @@ const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 let fechaActual = new Date();
 let hoy = new Date();
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbxXeKXQnqbij57AxTsZ3PVkoMnLTWQWrLUkZUF5l2qgE_fFuwYOrp2ADNdGga6PiN674A/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwx0SkTa0suEJzUJqNW80AYYUE4bwEihDhDtNX-oUvoXia4VQvfnbnikp3mVG20BNZQ/exec';
 
 function generarCalendario(fecha) {
   calendar.innerHTML = '';
