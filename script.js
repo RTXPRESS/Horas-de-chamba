@@ -96,10 +96,6 @@ function generarCalendario(fecha) {
 
 generarCalendario(fechaActual);
 
-// ----------------------------
-// FUNCIONES CON GOOGLE SHEETS
-// ----------------------------
-
 async function cargarRegistros() {
   try {
     const response = await fetch(API_URL);
@@ -108,7 +104,7 @@ async function cargarRegistros() {
     tabla.innerHTML = '';
     registros.forEach(reg => {
       const fechaObj = new Date(reg.fecha);
-      const fechaFormateada = fechaObj.toISOString().slice(0, 10); // YYYY-MM-DD
+      const fechaFormateada = fechaObj.toISOString().slice(0, 10);
 
       const fila = document.createElement('tr');
       fila.innerHTML = `
@@ -125,11 +121,48 @@ async function cargarRegistros() {
   }
 }
 
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const datos = {
+    fecha: document.getElementById('fecha').value,
+    horas: parseFloat(document.getElementById('horas').value),
+    feriado: document.getElementById('feriado').checked,
+    horaInicio: document.getElementById('horaInicio').value,
+    horaFin: document.getElementById('horaFin').value
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos)
+    });
+
+    if (response.ok) {
+      form.reset();
+      fechaInput.value = "";
+      cargarRegistros();
+    } else {
+      console.error('Error al enviar los datos:', response.statusText);
+    }
+  } catch (err) {
+    console.error('Error en fetch POST:', err);
+  }
+});
 
 document.getElementById('limpiarRegistros').addEventListener('click', async () => {
   if (confirm('¿Estás seguro de que deseas borrar todos los registros?')) {
     try {
-      await fetch(API_URL, { method: 'DELETE' });
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ borrar: true })
+      });
       cargarRegistros();
     } catch (err) {
       console.error("Error al borrar registros:", err);
