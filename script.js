@@ -12,7 +12,6 @@ let hoy = new Date();
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbwSTKMnBiPI1I9jaFi0KHtC9hNz7iKxij7zVLaxbfMUctbl0DOalJK-3NX3N7utXjj1/exec';
 
-
 function generarCalendario(fecha) {
   calendar.innerHTML = '';
 
@@ -130,11 +129,7 @@ async function cargarRegistros() {
 document.getElementById('limpiarRegistros').addEventListener('click', async () => {
   if (confirm('¿Estás seguro de que deseas borrar todos los registros?')) {
     try {
-      await fetch(API_URL + "?action=borrar", {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: ""
-      });
+      await fetch(API_URL, { method: 'DELETE' });
       cargarRegistros();
     } catch (err) {
       console.error("Error al borrar registros:", err);
@@ -142,3 +137,4 @@ document.getElementById('limpiarRegistros').addEventListener('click', async () =
   }
 });
 
+cargarRegistros();
