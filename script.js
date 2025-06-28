@@ -10,6 +10,7 @@ const dias = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 let fechaActual = new Date();
 let hoy = new Date();
 
+// 👉 Asegurate de que esta URL es tu implementación activa
 const API_URL = 'https://script.google.com/macros/s/AKfycbwSTKMnBiPI1I9jaFi0KHtC9hNz7iKxij7zVLaxbfMUctbl0DOalJK-3NX3N7utXjj1/exec';
 
 function generarCalendario(fecha) {
@@ -124,21 +125,17 @@ async function cargarRegistros() {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const datos = {
-    fecha: document.getElementById('fecha').value,
-    horas: parseFloat(document.getElementById('horas').value),
-    feriado: document.getElementById('feriado').checked,
-    horaInicio: document.getElementById('horaInicio').value,
-    horaFin: document.getElementById('horaFin').value
-  };
+  const formData = new FormData();
+  formData.append("fecha", document.getElementById('fecha').value);
+  formData.append("horas", document.getElementById('horas').value);
+  formData.append("feriado", document.getElementById('feriado').checked);
+  formData.append("horaInicio", document.getElementById('horaInicio').value);
+  formData.append("horaFin", document.getElementById('horaFin').value);
 
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(datos)
+      body: formData
     });
 
     if (response.ok) {
@@ -158,10 +155,7 @@ document.getElementById('limpiarRegistros').addEventListener('click', async () =
     try {
       await fetch(API_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ borrar: true })
+        body: new URLSearchParams({ borrar: true })
       });
       cargarRegistros();
     } catch (err) {
