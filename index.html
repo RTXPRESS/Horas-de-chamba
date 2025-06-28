@@ -51,5 +51,89 @@
   <button id="limpiarRegistros" style="margin-top: 10px; background-color: #cc0000;">🗑 Borrar todos los registros</button>
 
   <script src="script.js"></script>
+  <!-- Botones -->
+<button id="login-btn">Iniciar sesión con Google</button>
+<button id="logout-btn" style="display:none;">Cerrar sesión</button>
+
+<!-- Contenido de tu app -->
+<div id="app-content" style="display:none;">
+  <!-- Aquí va tu formulario, calendario, tabla, etc. -->
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBiOScmjzhSWcu-tl1musWHzPWRgQyBHQ4",
+  authDomain: "horas-de-chamba.firebaseapp.com",
+  projectId: "horas-de-chamba",
+  storageBucket: "horas-de-chamba.firebasestorage.app",
+  messagingSenderId: "355780783094",
+  appId: "1:355780783094:web:518df1bb8531213106b5d7",
+  measurementId: "G-TD47W8HVL5"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  const loginBtn = document.getElementById('login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  const appContent = document.getElementById('app-content');
+
+  function mostrarContenido() {
+    loginBtn.style.display = 'none';
+    logoutBtn.style.display = 'inline-block';
+    appContent.style.display = 'block';
+  }
+
+  function ocultarContenido() {
+    loginBtn.style.display = 'inline-block';
+    logoutBtn.style.display = 'none';
+    appContent.style.display = 'none';
+  }
+
+  loginBtn.addEventListener('click', async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      const result = await auth.signInWithPopup(provider);
+      const user = result.user;
+      if (user.email === "apps.crvv@gmail.com") {  // <--- tu cuenta autorizada
+        mostrarContenido();
+      } else {
+        alert("No estás autorizado");
+        auth.signOut();
+      }
+    } catch (error) {
+      console.error("Error de login:", error);
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    auth.signOut();
+  });
+
+  auth.onAuthStateChanged(user => {
+    if (user && user.email === "tu-email@gmail.com") {
+      mostrarContenido();
+    } else {
+      ocultarContenido();
+    }
+  });
+</script>
+
 </body>
 </html>
