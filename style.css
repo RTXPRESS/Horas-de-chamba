@@ -133,3 +133,9 @@ th {
     margin-top: 5px;
   }
 }
+
+  tbody td {
+  text-align: center;
+  vertical-align: middle;
+}
+
