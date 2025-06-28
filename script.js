@@ -11,7 +11,7 @@ let fechaActual = new Date();
 let hoy = new Date();
 
 // 👉 Asegurate de que esta URL es tu implementación activa
-const API_URL = 'https://script.google.com/macros/s/AKfycbwSTKMnBiPI1I9jaFi0KHtC9hNz7iKxij7zVLaxbfMUctbl0DOalJK-3NX3N7utXjj1/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxZXFqJ7K4VicAZ5ul3BI31sUvDPITJHyUQ6b4rXwzKRDih55Xh8tcFbFsKgXARhgvUCg/exec';
 
 function generarCalendario(fecha) {
   calendar.innerHTML = '';
