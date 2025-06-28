@@ -129,7 +129,11 @@ async function cargarRegistros() {
 document.getElementById('limpiarRegistros').addEventListener('click', async () => {
   if (confirm('¿Estás seguro de que deseas borrar todos los registros?')) {
     try {
-      await fetch(API_URL, { method: 'DELETE' });
+      await fetch(API_URL + "?action=borrar", {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: ""
+      });
       cargarRegistros();
     } catch (err) {
       console.error("Error al borrar registros:", err);
@@ -137,4 +141,3 @@ document.getElementById('limpiarRegistros').addEventListener('click', async () =
   }
 });
 
-cargarRegistros();
